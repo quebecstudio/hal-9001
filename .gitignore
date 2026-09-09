@@ -1,0 +1,6 @@
+# workflow : ce qui n'appartient qu'à un poste
+workflow/instructions.local.md
+workflow/handoff.md
+workflow/*.local.md
+node_modules/
+.idea/

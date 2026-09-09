@@ -1,0 +1,3 @@
+# Les scripts shell restent en LF : Git Bash sur Windows refuse un fichier
+# en CRLF avec « $'\r': command not found ».
+*.sh text eol=lf
