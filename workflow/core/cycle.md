@@ -122,7 +122,9 @@ Ce qui a été commité reste, et la branche est déjà là.
 - Blueprint : `blueprints/NNNN-kebab-title.md`, quatre chiffres, jamais réutilisé.
   Le numéro suit l'ordre d'exécution des chantiers.
 - Backlog : `backlog/kebab-title.md`, sans numéro.
-- Dette : `debts/NNNN-kebab-title.md`, NNNN = blueprint d'origine.
+- Dette : `debts/NNNN-kebab-title.md`, NNNN = blueprint d'origine. **`0000` quand
+  elle naît hors chantier** : aucun plan ne la porte, et un numéro emprunté à un
+  blueprint la ferait chercher là où elle n'est pas.
 - Script : `milestones/NNNN-kebab-title.sh`, même numéro et slug que le
   blueprint.
 - Bibliothèque : `core/scripts/lib/forge.sh`, **quelle que soit la forge**. Le
