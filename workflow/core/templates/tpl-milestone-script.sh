@@ -30,12 +30,30 @@ JALON=$(createMilestone "$TITRE" "$DESCRIPTION")
 echo "  jalon #$JALON créé"
 
 # Une entrée par ligne du découpage du blueprint, dans l'ordre. La clé sert aux
-# dépendances plus bas ; les labels se séparent par des virgules, sans espace.
+# dépendances plus bas et à retrouver le corps ; les labels se séparent par des
+# virgules, sans espace.
 #
-#   clé|type|labels|titre|corps
+#   clé|type|labels|titre
 ISSUES=(
-  "socle|feature|backend|<Titre de l'issue>|<Corps, depuis core/templates/tpl-issue.md>"
-  "suite|feature|backend|<Titre de l'issue>|<Corps>"
+  "socle|feature|backend|<Titre de l'issue>"
+  "suite|feature|backend|<Titre de l'issue>"
+)
+
+# Le corps de chaque tâche, dans `corps_<clé>`. Il vit hors du tableau : `read`
+# s'arrête au premier saut de ligne, et un corps qui voyagerait dans la même
+# ligne que les métadonnées y serait tronqué sans que rien ne le dise. Un `|`
+# dans le texte décalerait en outre les champs.
+#
+# Heredoc en quotes simples : le corps part tel qu'il est écrit, sans expansion
+# ni échappement. C'est `createIssue` qui le fait passer par un fichier.
+corps_socle=$(cat <<'CORPS'
+<Corps, depuis core/templates/tpl-issue.md>
+CORPS
+)
+
+corps_suite=$(cat <<'CORPS'
+<Corps>
+CORPS
 )
 
 # Les dépendances, en paires « bloquée bloquante », recopiées de la colonne
@@ -51,7 +69,12 @@ cherche() { printf '%s\n' "$CREEES" | grep -F "$1	" | cut -f"$2"; }
 
 echo "=== Création des tâches ==="
 for entree in "${ISSUES[@]}"; do
-  IFS='|' read -r cle type labels titre corps <<< "$entree"
+  IFS='|' read -r cle type labels titre <<< "$entree"
+  # Expansion indirecte plutôt qu'un tableau associatif, qui est de bash 4.
+  ref_corps="corps_$cle"
+  corps=${!ref_corps:-}
+  # Une tâche sans corps est un découpage incomplet, pas une tâche courte.
+  [ -n "$corps" ] || { echo "Corps absent pour « $cle » : définissez $ref_corps." >&2; exit 1; }
   IFS=$'\t' read -r numero identifiant < <(createIssue "$JALON" "$titre" "$type" "$labels" "$corps$REF")
   CREEES="$CREEES$cle	$numero	$identifiant"$'\n'
   echo "  #$numero  $titre"
