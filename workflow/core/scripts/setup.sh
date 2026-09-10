@@ -23,9 +23,15 @@ cd "$RACINE"
 
 REMOTE=hal
 fait=0
+reste=0
 signale_apres=
+signale_garde=
 note() { printf '  %s\n' "$1"; }
 pose() { printf '  + %s\n' "$1"; fait=$((fait + 1)); }
+# Définie ici, avec note() et pose() : la vérification des outils l'appelle bien
+# avant le bilan qu'elle alimente, et une fonction appelée avant sa définition
+# sort en 127 — sous `set -e`, le script meurt alors sans nommer sa cause.
+signale() { printf '  → %s\n' "$1"; reste=$((reste + 1)); }
 
 # --- Mise à jour du kit d'amont ----------------------------------------------
 # Ce qui vient de HAL 9001 vit dans un seul dossier, et rien d'autre n'y vit :
@@ -265,7 +271,15 @@ else
     printf '{\n%s\n}\n' "$HOOK" > "$REGLAGES"
     pose "$REGLAGES — la garde"
   elif grep -q '"hooks"' "$REGLAGES"; then
-    note "$REGLAGES — une clé hooks est déjà là"
+    # Une clé hooks n'est pas la garde : le fichier peut n'en porter que
+    # d'autres. Sans cette seconde lecture, le seul endroit où la méthode
+    # contraint au lieu de demander reste absent, et rien ne le dit.
+    if grep -q 'garde-poussee.sh' "$REGLAGES"; then
+      note "$REGLAGES — la garde est branchée"
+    else
+      note "$REGLAGES — une clé hooks est déjà là, mais pas la garde"
+      signale_garde="$REGLAGES — la clé hooks existe sans la garde : ajoutez le bloc PreToolUse/Bash à la main"
+    fi
   elif [ "$(sed -n '/[^[:space:]]/{p;q;}' "$REGLAGES" | tr -d '[:space:]')" = "{" ]; then
     cp "$REGLAGES" "$REGLAGES.bak"
     HOOK="$HOOK" awk 'NR==1 && /^[[:space:]]*\{/ {print; print ENVIRON["HOOK"] ","; next} {print}' \
@@ -327,8 +341,6 @@ fi
 # --- Ce que ce script ne sait pas faire --------------------------------------
 echo
 echo "=== Ce qui reste, et qui demande de lire le dépôt ==="
-reste=0
-signale() { printf '  → %s\n' "$1"; reste=$((reste + 1)); }
 
 # Le contrat de la Pile : la pile est libre, sa déclaration ne l'est pas. Les
 # règles s'appuient dessus pour savoir quoi lancer, donc une clé absente est un
@@ -415,6 +427,7 @@ for f in CLAUDE.md AGENTS.md; do
 done
 
 [ -n "$signale_apres" ] && signale "$signale_apres"
+[ -n "$signale_garde" ] && signale "$signale_garde"
 
 [ "$reste" -eq 0 ] && note "rien — le dépôt est complet"
 
