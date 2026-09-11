@@ -272,7 +272,11 @@ if [ -n "$branche" ] && command -v git >/dev/null 2>&1; then
     # Elle garde son jaune à l'intérieur du segment : collée à une branche de
     # chantier, qui est verte, elle dirait « tout va bien » alors qu'elle rappelle
     # qu'il reste quelque chose à faire.
-    *) avance="$FIN$JAUNE ⇡$n" ;;
+    #
+    # Elle ferme sa propre couleur : le segment qui la porte n'en ouvre pas
+    # toujours une — le tronc s'écrit nu hors chantier —, et sans ce `FIN` le
+    # jaune débordait sur le séparateur suivant.
+    *) avance="$FIN$JAUNE ⇡$n$FIN" ;;
   esac
 fi
 
