@@ -133,7 +133,10 @@ puis revient avec ce qu'elle a trouvé. Et elle pose la question **avec l'outil
 de choix** plutôt qu'en prose : ce qu'on lit dans un paragraphe se saute, ce
 qu'on clique se prend.
 
-L'état ne s'écrit **qu'après** la réponse du développeur.
+L'état s'**annonce** à la sortie, une fois la voie retenue, et ne s'écrit qu'au
+tour suivant : les outils d'écriture sont retirés, et c'est précisément ce qui
+garantit qu'un cadrage ne produit aucun fichier. Tenir `etat.local.md` est déjà
+une règle de la méthode ; la procédure n'a pas à la doubler.
 
 ### `/chantier`
 

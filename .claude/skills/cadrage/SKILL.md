@@ -85,8 +85,13 @@ planifier ». En voie courte, ils vont dans l'issue, sous Objectifs, Fichiers et
 Tests. Ce qui change d'une voie à l'autre est où ils atterrissent, pas s'ils
 existent.
 
-### 5. Écrire l'état, une fois la voie retenue
+### 5. Annoncer l'état, une fois la voie retenue
 
-Le développeur tranche, jamais l'agent. Après sa réponse seulement, écrire dans
-`workflow/etat.local.md` l'état que la voie ouvre — `Blueprint`, `Courte`, ou
-`Repos` si c'est hors chantier — et annoncer ce qui vient ensuite.
+Le développeur tranche, jamais l'agent. Après sa réponse seulement, annoncer
+l'état que la voie ouvre — `Blueprint`, `Courte`, ou `Repos` si c'est hors
+chantier — et ce qui vient ensuite.
+
+Il s'**écrit au tour suivant**, pas ici : les outils d'écriture sont retirés
+pour ce tour, et c'est ce qui garantit qu'un cadrage ne produit aucun fichier.
+Tenir `workflow/etat.local.md` à jour est déjà une règle de la méthode ; elle
+n'a pas besoin de cette procédure pour s'appliquer.
