@@ -97,6 +97,20 @@ CONTEXTE=$(printf '%s' "$SEG" \
   | sed -n 's/.*"used_percentage"[[:space:]]*:[[:space:]]*\([0-9][0-9.]*\).*/\1/p' \
   | cut -d. -f1)
 
+# Le niveau d'effort du modèle, sous `effort.level`. Même précaution que pour le
+# contexte : « level » est un nom trop commun pour être cherché dans tout le
+# document, on isole d'abord le segment. Absent d'une entrée plus ancienne, le
+# champ reste vide et ne s'affiche pas.
+EFFORT=""
+case $ENTREE in
+  *'"effort"'*)
+    SEG=$(printf '%s' "$ENTREE" | tr -d '\n')
+    SEG=${SEG#*\"effort\"}
+    EFFORT=$(printf '%s' "$SEG" \
+      | sed -n 's/.*"level"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+    ;;
+esac
+
 # Le vocabulaire de l'état, et la seule source qui l'énonce : setup.sh le lit
 # ici pour écrire l'en-tête de etat.local.md, et la documentation y renvoie.
 #
@@ -273,7 +287,9 @@ if [ -n "$CONTEXTE" ]; then
   fi
 fi
 
-[ -n "$MODELE" ] && ajouter "$GRIS$ICONE_MODELE $MODELE$FIN"
+# L'effort suit le modèle dans le même segment : c'est une propriété de lui, pas
+# un champ à part, et la ligne n'a pas de place à donner à un séparateur de plus.
+[ -n "$MODELE" ] && ajouter "$GRIS$ICONE_MODELE $MODELE${EFFORT:+ · $EFFORT}$FIN"
 
 printf '%s\n' "$morceaux"
 exit 0
