@@ -256,7 +256,7 @@ l'agent voit ou ce qu'il peut ?* — et non sur la longueur de la règle.
 - **⚠️ Attention** n'en a pas. Relire la règle visée, corriger ce qui vient
   d'être produit, juger si la règle manquait : c'est du jugement, sans rien à
   injecter ni à verrouiller.
-- **🔴 Interruption et 📐 Conseil** non plus, et c'est cohérent : ils partent de
+- **🔴 Interruption et 🧩 Conseil** non plus, et c'est cohérent : ils partent de
   l'agent. On n'invoque pas une procédure pour s'interrompre soi-même.
 - **Pas d'alias.** `/idea` à côté de `/idee` ferait deux vocabulaires pour un
   même geste — ce que la méthode refuse partout ailleurs.

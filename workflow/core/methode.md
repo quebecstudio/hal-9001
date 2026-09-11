@@ -163,7 +163,7 @@ Deux marqueurs partent de l'agent, sans mot-clé :
 
 - 🔴 **Interruption** — il s'arrête avant d'écrire parce qu'il voit plus solide,
   et propose. Il n'applique pas.
-- 📐 **Conseil** — une recommandation qu'on ne lui a pas demandée.
+- 🧩 **Conseil** — une recommandation qu'on ne lui a pas demandée.
 
 **Neuf marqueurs, et pas un de plus.** Une réponse s'ouvre par le sien, émoji
 puis mot. Il s'applique aussi quand le mot-clé n'a pas été écrit : c'est la

@@ -23,35 +23,40 @@ FIN=$'\033[0m'
 # voir ». Un jeu de couleurs par étape mentirait — onze états pour six couleurs
 # utilisables —, et le jaune cesserait de vouloir dire quelque chose.
 #
-# Les emojis marquent le champ : 🌿 « ici, la branche », 🧠 « ici, le contexte ».
+# Les emojis marquent le champ : 💻 « ici, la branche », 🧠 « ici, le contexte ».
 # L'étape fait exception, et c'est la seule qui la mérite — une branche est une
 # chaîne, un pourcentage un nombre, un modèle un nom, mais une étape est une
 # **catégorie**, et c'est le seul champ dont la valeur se reconnaît d'un coup
 # d'œil avant d'être lue.
 #
+# Le champ branche ne prend pas de feuille : la pousse 🌱 marque déjà l'étape
+# Branche, et deux plantes côte à côte se confondent.
+#
 # Deux contraintes sur le choix des glyphes. Aucun des neuf marqueurs de la
-# méthode — 📐 conviendrait à Blueprint et lui est pris. Aucun sélecteur de
-# variante : ⚙️ et 🗺️ portent un U+FE0F dont la largeur est instable selon le
-# terminal, et le défaut ne se verrait que chez celui qui atteint cette étape-là.
-ICONE_BRANCHE="🌿"
+# méthode. Aucun sélecteur de variante : ⚙️ et 🗺️ portent un U+FE0F dont la
+# largeur est instable selon le terminal, et le défaut ne se verrait que chez
+# celui qui atteint cette étape-là.
+ICONE_BRANCHE="💻"
 ICONE_CONTEXTE="🧠"
 ICONE_MODELE="🤖"
 
-# Le repli sert à l'étape inconnue : le champ reste marqué, sa valeur manque.
+# Le repli sert à l'étape inconnue : le champ reste marqué, sa valeur manque. Il
+# ne reprend aucun glyphe d'étape, sans quoi un état illisible se déguiserait en
+# état connu.
 icone_etape() {
   case "$1" in
-    Repos)    printf '💤' ;;
-    Cadrage)  printf '🧭' ;;
-    Blueprint) printf '📋' ;;
-    Chantier) printf '🚧' ;;
-    Branche)  printf '🌱' ;;
-    Issues)   printf '🔨' ;;
-    Courte)   printf '⚡' ;;
-    Dettes)   printf '🧾' ;;
-    Révision) printf '🔍' ;;
-    Fusion)   printf '🔀' ;;
-    Abandon)  printf '❌' ;;
-    *)        printf '🧭' ;;
+    Repos)     printf '💤' ;;
+    Cadrage)   printf '🧭' ;;
+    Blueprint) printf '📐' ;;
+    Chantier)  printf '🚧' ;;
+    Branche)   printf '🌱' ;;
+    Issues)    printf '🔨' ;;
+    Courte)    printf '⚡' ;;
+    Dettes)    printf '🧾' ;;
+    Révision)  printf '🔍' ;;
+    Fusion)    printf '🔀' ;;
+    Abandon)   printf '❌' ;;
+    *)         printf '❔' ;;
   esac
 }
 

@@ -152,7 +152,7 @@ arrêté pour proposer autre chose.
 | `Relais :` | 🔁 | La session se termine. | Il écrit le passage de relais dans `workflow/handoff.md`, hors Git, ancré sur la branche, le HEAD et l'heure. |
 | `Reprise :` | 🔄 | Une session commence sur un travail en cours. | Il lit le relais et les fichiers qu'il nomme, **supprime le fichier**, résume en trois lignes, avertit de tout écart avec l'ancre, et attend avant de modifier le dépôt. |
 | *aucun* | 🔴 | **Interruption.** *Part de l'agent* : il voit plus solide. | Il s'arrête avant d'écrire et propose. Il n'applique pas. |
-| *aucun* | 📐 | **Conseil.** *Part de l'agent.* | Une recommandation qu'on ne lui a pas demandée. |
+| *aucun* | 🧩 | **Conseil.** *Part de l'agent.* | Une recommandation qu'on ne lui a pas demandée. |
 
 Les deux derniers n'ont pas de mot-clé, et c'est cohérent : ils partent de
 l'agent. Sept mots-clés, donc, pour neuf marqueurs.
