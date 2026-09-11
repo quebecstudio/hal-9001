@@ -23,12 +23,37 @@ FIN=$'\033[0m'
 # voir ». Un jeu de couleurs par étape mentirait — onze états pour six couleurs
 # utilisables —, et le jaune cesserait de vouloir dire quelque chose.
 #
-# Les emojis, eux, marquent le **champ** et pas sa valeur : ils sont fixes, et
-# n'entrent donc pas en collision avec les neuf marqueurs de la méthode.
-ICONE_ETAPE="🧭"
+# Les emojis marquent le champ : 🌿 « ici, la branche », 🧠 « ici, le contexte ».
+# L'étape fait exception, et c'est la seule qui la mérite — une branche est une
+# chaîne, un pourcentage un nombre, un modèle un nom, mais une étape est une
+# **catégorie**, et c'est le seul champ dont la valeur se reconnaît d'un coup
+# d'œil avant d'être lue.
+#
+# Deux contraintes sur le choix des glyphes. Aucun des neuf marqueurs de la
+# méthode — 📐 conviendrait à Blueprint et lui est pris. Aucun sélecteur de
+# variante : ⚙️ et 🗺️ portent un U+FE0F dont la largeur est instable selon le
+# terminal, et le défaut ne se verrait que chez celui qui atteint cette étape-là.
 ICONE_BRANCHE="🌿"
 ICONE_CONTEXTE="🧠"
 ICONE_MODELE="🤖"
+
+# Le repli sert à l'étape inconnue : le champ reste marqué, sa valeur manque.
+icone_etape() {
+  case "$1" in
+    Repos)    printf '💤' ;;
+    Cadrage)  printf '🧭' ;;
+    Blueprint) printf '📋' ;;
+    Chantier) printf '🚧' ;;
+    Branche)  printf '🌱' ;;
+    Issues)   printf '🔨' ;;
+    Courte)   printf '⚡' ;;
+    Dettes)   printf '🧾' ;;
+    Révision) printf '🔍' ;;
+    Fusion)   printf '🔀' ;;
+    Abandon)  printf '❌' ;;
+    *)        printf '🧭' ;;
+  esac
+}
 
 # L'entrée est un JSON plat produit par l'agent, jamais une donnée d'origine
 # inconnue : l'extraction au sed est acceptable ici et nulle part ailleurs.
@@ -141,11 +166,11 @@ ajouter() { morceaux="${morceaux:+$morceaux$GRIS · $FIN}$1"; }
 
 if [ "$etape" = "Repos" ]; then
   # Rien en vol : la ligne se tait plutôt que d'annoncer une absence.
-  ajouter "$GRIS$ICONE_ETAPE $etape$FIN"
+  ajouter "$GRIS$(icone_etape "$etape") $etape$FIN"
 elif [ -n "$etape" ]; then
-  ajouter "$ICONE_ETAPE $etape"
+  ajouter "$(icone_etape "$etape") $etape"
 else
-  ajouter "${JAUNE}$ICONE_ETAPE étape inconnue${FIN}"
+  ajouter "${JAUNE}$(icone_etape '') étape inconnue${FIN}"
 fi
 
 if [ -n "$chantier" ]; then
