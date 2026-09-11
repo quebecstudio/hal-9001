@@ -52,7 +52,7 @@ workflow/
 .claude/
   settings.json                # ligne de statut et garde ; produit par setup.sh, pas livré
   hooks/
-    garde-poussee.sh           # refuse à l'agent push, merge et gh pr merge
+    garde-poussee.sh           # refuse merge, gh pr merge, et tout push hors de dev/<slug>
   skills/                      # les neuf procédures
     question/  idee/  bug/  amendement/  attention n'en a pas
     cadrage/  chantier/  abandon/  relais/  reprise/

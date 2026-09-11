@@ -78,9 +78,9 @@ de référence et dans les messages de commit.
 - **Annoncer, et attendre quand le geste engage.** Dans le périmètre ouvert —
   celui que le cadrage a posé, ou les fichiers que l'issue nomme — énoncer et
   faire. Ailleurs, ou
-  pour ce qui ne se défait pas — chantier, branche, push, fusion, script,
-  hypothèse, fichier que l'issue ne nomme pas — énoncer, **s'arrêter, attendre la
-  réponse**. Annoncer puis faire dans la même réponse est un compte rendu, pas
+  pour ce qui ne se défait pas — chantier, branche, fusion, poussée hors de la
+  branche de chantier, script, hypothèse, fichier que l'issue ne nomme pas —
+  énoncer, **s'arrêter, attendre la réponse**. Annoncer puis faire dans la même réponse est un compte rendu, pas
   une annonce.
 - **Une autorisation vaut pour le geste qu'elle nomme.** Elle ne s'étend pas à ce
   qui l'entoure, ne se déduit pas d'une réponse donnée à une autre question, ne
@@ -102,7 +102,8 @@ de référence et dans les messages de commit.
 - **Suivre l'existant.** Regarder les fichiers voisins avant de créer. Réutiliser
   avant d'écrire.
 - **Demander avant de changer le cadre.** Dépendance, dossier racine, suppression
-  de test, push, fusion, enregistrements hors tests.
+  de test, fusion, poussée hors de la branche de chantier, enregistrements hors
+  tests.
 - **Pas de documentation spontanée.** Un fichier de documentation ne se crée que
   sur demande.
 - **Ce qui documente ne recopie pas.** Pointer le fichier, ou l'inclure par un

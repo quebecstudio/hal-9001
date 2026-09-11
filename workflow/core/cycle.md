@@ -198,13 +198,24 @@ oblige. Détail et cas limites : annexe E du document de référence.
 
 ## La garde des gestes irréversibles
 
-`setup.sh` pose aussi un hook qui **refuse à l'agent `git push`, `git merge` et
-`gh pr merge`**. Ce sont les gestes qu'un `git revert` ne défait pas, et le seul
-endroit où la méthode passe d'une consigne à une contrainte : la règle existait
-déjà, elle est maintenant vraie.
+`setup.sh` pose aussi un hook qui **refuse à l'agent `git merge`, `gh pr merge`
+et toute poussée hors de sa branche de chantier**. Ce sont les gestes qu'un
+`git revert` ne défait pas, et le seul endroit où la méthode passe d'une
+consigne à une contrainte : la règle existait déjà, elle est maintenant vraie.
 
-Le développeur, lui, n'est pas gêné — il pousse en tapant `! git push` dans sa
-saisie, ce qui n'est pas un appel d'outil et ne passe pas par la garde.
+**Une exception, et elle est étroite** : `git push <distant> dev/<slug>`, avec
+`-u` au besoin. Une branche de chantier est un brouillon que la révision relit
+et que la fusion absorbe ; la pousser se défait en la supprimant du distant. Le
+tronc, lui, est tiré et construit dessus dans l'heure.
+
+L'exception décrit la commande **entière**, non un fragment — sans quoi
+`git push origin dev/x:main` pousserait une branche de chantier vers le tronc, et
+`git push origin dev/x && git push origin main` passerait sur la foi de sa
+première moitié. `--force`, `--all` et `--mirror` restent refusés : ce qu'ils
+écrasent au distant ne se retrouve nulle part en local.
+
+Le développeur, lui, n'est gêné par rien — il pousse en tapant `! git push` dans
+sa saisie, ce qui n'est pas un appel d'outil et ne passe pas par la garde.
 
 Le hook vit dans `.claude/hooks/garde-poussee.sh` et vient du kit. Il ne lit que
 la commande, en bash, sans dépendre de rien de plus que ce que le poste a déjà.

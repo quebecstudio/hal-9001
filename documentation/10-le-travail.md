@@ -258,7 +258,7 @@ redécouvrir le même constat.
 
 | Il demande | Il décide |
 |------------|-----------|
-| Ajouter une dépendance. Créer un dossier racine. Supprimer un test. Pousser ou fusionner. Créer des enregistrements hors tests. Toucher un fichier que l'issue ne nomme pas. S'écarter du plan. | Le nommage dans les conventions existantes. Le découpage interne d'une issue. Les tests à écrire. La correction d'un défaut découvert en passant, signalée dans le commentaire de livraison. |
+| Ajouter une dépendance. Créer un dossier racine. Supprimer un test. Fusionner, ou pousser ailleurs que sur sa branche de chantier. Créer des enregistrements hors tests. Toucher un fichier que l'issue ne nomme pas. S'écarter du plan. | Le nommage dans les conventions existantes. Le découpage interne d'une issue. Les tests à écrire. La correction d'un défaut découvert en passant, signalée dans le commentaire de livraison. |
 
 Un agent qui demande tout est aussi inutile qu'un agent qui ne demande rien.
 
