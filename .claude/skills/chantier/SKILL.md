@@ -90,7 +90,8 @@ couvrent et ce qui les interrompt. `cycle.md` porte la règle.
 
 ### 7. L'état courant
 
-Si `workflow/etat.local.md` existe, l'écrire : `Issues M0017 #<première issue>`.
+Si `workflow/etat.local.md` existe, y écrire `Issues` — **l'étape, et elle
+seule**. Le chantier se déduit de la branche, l'issue du dernier commit.
 
 ## Ce que tu ne fais pas ici
 
