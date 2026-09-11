@@ -1,3 +1,8 @@
 # Les scripts shell restent en LF : Git Bash sur Windows refuse un fichier
 # en CRLF avec « $'\r': command not found ».
 *.sh text eol=lf
+
+# Les fichiers de compétence portent des blocs `!` exécutés par le harnais : du
+# shell dans du Markdown, qui échouerait de la même façon en CRLF. Le reste des
+# .md suit, pour que la règle n'ait pas d'exception à retenir.
+*.md text eol=lf
