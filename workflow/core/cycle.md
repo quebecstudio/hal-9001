@@ -21,12 +21,12 @@ des trois voies, décrites juste après.
 | État | Ce qui s'y fait | Ce que l'agent demande pour en sortir | Vers |
 |---|---|---|---|
 | **Repos** | Rien n'est ouvert. C'est l'état entre deux chantiers. | Rien : c'est le développeur qui amène un sujet. | Cadrage |
-| **Cadrage** | On passe à l'agent les constats et décisions déjà pris. Il lit `backlog/` et signale ce qui touche au sujet, pose le périmètre — ce qu'on touche, ce qu'on ne touche pas — puis pèse le travail : décisions à figer, dépendances entre tâches, ce qui ne se défait pas. | « Voici ce que j'ai compris, et ce que cela touche. Est-ce la même chose que toi ? », puis « voici la voie que je propose, et pourquoi ». Procédure : `/cadrage`. | Blueprint, Courte, ou hors chantier ; reste au Cadrage tant qu'on ne s'entend pas |
+| **Cadrage** | On passe à l'agent les constats et décisions déjà pris. Il lit `backlog/` et signale ce qui touche au sujet, pose le périmètre — ce qu'on touche, ce qu'on ne touche pas — puis pèse le travail : décisions à figer, dépendances entre tâches, ce qui ne se défait pas. | « Voici ce que j'ai compris, et ce que cela touche. Est-ce la même chose que toi ? », puis « voici la voie que je propose, et pourquoi ». Procédure : `/cadrage`. | Blueprint, Tâche, ou hors chantier ; reste au Cadrage tant qu'on ne s'entend pas |
 | **Blueprint** | Rédigé depuis `core/templates/tpl-blueprint.md`, statut `Proposé`. Discuté, corrigé. | « Le plan est-il accepté ? » | Chantier si `Accepté` ; reste tant qu'il est discuté ; Repos s'il est abandonné |
 | **Chantier** | Le script de milestone est écrit depuis son gabarit, et donné à relire. Procédure : `/chantier`. | « Je l'exécute ? » — le seul geste qui crée dans un système externe. | Branche une fois exécuté |
 | **Branche** | Rien encore. | « Je crée `dev/<slug>` depuis `main` tiré à l'instant ? » | Issues |
 | **Issues** | Prises dans l'ordre des dépendances, au régime convenu à l'entrée — une issue, une vague, une portion. Tests ciblés, un commit par issue, fermeture avec commentaire de livraison. Pas de push automatique. | À l'entrée : « par où, et jusqu'où ? ». Puis rien, tant que le mandat court. À la dernière : « toutes fermées, je relève les dettes ? » | Dettes |
-| **Courte** | La voie sans blueprint ni milestone. Issues écrites à la main, branche `dev/<slug>`, un commit par issue, tests ciblés, fermeture avec commentaire de livraison. | « Toutes fermées, j'ouvre la PR ? » | Révision |
+| **Tâche** | La voie courte, sans blueprint ni milestone — la ligne de statut l'affiche « Tâche simple ». Issues écrites à la main, branche `dev/<slug>`, un commit par issue, tests ciblés, fermeture avec commentaire de livraison. | « Toutes fermées, j'ouvre la PR ? » | Révision |
 | **Dettes** | Une dette par fichier dans `debts/`, préfixée du numéro du blueprint. | « Est-ce complet ? J'ouvre la PR ? » | Révision |
 | **Révision** | Une PR par chantier. Diff lu, code comparé au blueprint, suite complète verte — dans la CI quand le projet lui donne autorité, et son absence se dit plutôt qu'elle ne se remplace par un « c'est vert chez moi » —, tests corrigés revus un à un, audit de sécurité. | « Je fusionne ? » | Fusion ; retour aux Issues si la révision demande des corrections |
 | **Fusion** | Fusion, puis milestone fermé, blueprints amendés, entrée de backlog déplacée dans `delivered/` s'il y a lieu. | Rien : le chantier est clos. | Repos |
@@ -102,7 +102,8 @@ code, compter les dépendances réelles — puis pose la question avec ce qu'il 
 trouvé. Procédure : `/cadrage`.
 
 **La voie retenue s'annonce, puis se voit.** Elle est dite à la sortie du
-cadrage, et la ligne de statut la porte ensuite : `Courte · dev/faute-readme`.
+cadrage, et la ligne de statut la porte ensuite : `⚡ Tâche simple · #9 ·
+💻 dev/faute-readme`.
 Une session reprise à froid doit savoir dans quel régime elle travaille sans
 avoir à le demander.
 
@@ -145,7 +146,7 @@ dont les issues se relisent ensemble se prend d'un bloc ; une vague qui touche
 une migration, une garde ou un système externe se prend une issue à la fois. La
 question se pose avec l'outil de choix quand il y en a un.
 
-Cela vaut à l'entrée de l'état `Issues` comme en voie `Courte` : ce qui change
+Cela vaut à l'entrée de l'état `Issues` comme à celle de `Tâche` : ce qui change
 d'une voie à l'autre est d'où viennent les tâches, pas la façon de les attaquer.
 
 ## Statuts d'un blueprint

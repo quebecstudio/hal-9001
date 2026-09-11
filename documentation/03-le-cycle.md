@@ -30,7 +30,7 @@ Repos
        │                        └─ Dettes ..... une par fichier
        │                             └─ Révision (PR) ... diff, suite verte, audit
        │                                  └─ Fusion ..... sur demande explicite
-       ├─ Courte ..................... issues à la main, puis Révision
+       ├─ Tâche ...................... issues à la main, puis Révision
        └─ hors chantier .............. commit direct, l'état reste Repos
 
     dérive en cours de route ......... commentaire d'issue, le plan reste figé

@@ -47,6 +47,7 @@ ICONE_MODELE="🤖"
 libelle_etape() {
   case "$1" in
     Issues) printf 'Tâches' ;;
+    Tâche)  printf 'Tâche simple' ;;
     *)      printf '%s' "$1" ;;
   esac
 }
@@ -62,7 +63,7 @@ icone_etape() {
     Chantier)  printf '🚧' ;;
     Branche)   printf '🌱' ;;
     Issues)    printf '🔨' ;;
-    Courte)    printf '⚡' ;;
+    Tâche)     printf '⚡' ;;
     Dettes)    printf '🧾' ;;
     Révision)  printf '🔍' ;;
     Fusion)    printf '🔀' ;;
@@ -103,12 +104,16 @@ CONTEXTE=$(printf '%s' "$SEG" \
 # « Relais » achève la session, plus personne ne regarde la ligne — ni une
 # suspension de quelques heures : « Bug » obligerait à réécrire le fichier deux
 # fois par incident, et un fichier qu'on tient trop souvent finit par mentir.
-ETAPES="Repos Cadrage Blueprint Chantier Branche Issues Courte Dettes Révision Fusion Abandon"
+ETAPES="Repos Cadrage Blueprint Chantier Branche Issues Tâche Dettes Révision Fusion Abandon"
 
 # Celles où n'avoir ni chantier ni issue est l'état normal, et où l'alerte
-# « hors chantier » se tait donc. « Courte » en fait partie par définition :
-# c'est la voie sans blueprint ni milestone.
-SANS_CHANTIER="Repos Cadrage Blueprint Courte"
+# « hors chantier » se tait donc.
+#
+# Elle se tait aussi, quelle que soit l'étape, quand la branche dit qu'on est en
+# voie courte : `Révision` et `Fusion` s'atteignent depuis les deux voies, et
+# l'une d'elles n'a jamais de chantier. Les lister ici les rendrait tolérantes
+# sur la voie longue aussi, où l'absence de chantier est bien une anomalie.
+SANS_CHANTIER="Repos Cadrage Blueprint Tâche"
 
 # --- L'état déclaré ----------------------------------------------------------
 # Première ligne utile de workflow/etat.local.md. Le script y cherche trois
@@ -159,7 +164,8 @@ fi
 #
 # Ce qui est écrit dans le fichier reste prioritaire — Git ne sait pas tout, et
 # une correction à la main doit pouvoir gagner.
-if [ -z "$chantier" ] && [ -n "$branche" ]; then
+voie_courte=""
+if [ -n "$branche" ]; then
   case "$branche" in
     dev/*)
       slug=${branche#dev/}
@@ -168,7 +174,11 @@ if [ -z "$chantier" ] && [ -n "$branche" ]; then
       if [ "$trouves" -eq 1 ]; then
         fichier=$(ls "$RACINE"/workflow/blueprints/[0-9][0-9][0-9][0-9]-"$slug".md 2>/dev/null)
         base=${fichier##*/}
-        chantier=${base%%-*}
+        [ -z "$chantier" ] && chantier=${base%%-*}
+      else
+        # Une branche de chantier sans blueprint à son nom : c'est la voie
+        # courte, et n'y avoir pas de chantier est normal à toutes les étapes.
+        voie_courte=1
       fi
       ;;
   esac
@@ -210,8 +220,8 @@ elif [ -n "$issue" ]; then
 fi
 
 # Une alerte ne crie que sur une anomalie : aux étapes sans chantier, n'avoir
-# ni milestone ni issue est l'état normal.
-normal=""
+# ni milestone ni issue est l'état normal. Et en voie courte, à toute étape.
+normal="$voie_courte"
 for e in $SANS_CHANTIER; do
   [ "$etape" = "$e" ] && normal=1 && break
 done
@@ -230,6 +240,21 @@ else
   case "$branche" in
     dev/*) ajouter "${VERT}$ICONE_BRANCHE ${branche}${FIN}" ;;
     *)     ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${FIN}" ;;
+  esac
+fi
+
+# Les commits qui n'ont pas quitté le poste. Rien à afficher quand il n'y en a
+# pas : une alerte ne crie que sur une anomalie.
+#
+# L'avance se compte sans réseau, le retard non — il faudrait un `fetch` à chaque
+# frappe. Donc une flèche, et une seule. Sans amont — une branche jamais poussée
+# —, `@{upstream}` échoue et le champ reste vide, ce qui est honnête : on ne sait
+# pas ce qui manque au distant tant qu'on ne lui a rien dit.
+if [ -n "$branche" ] && command -v git >/dev/null 2>&1; then
+  avance=$(git -C "$RACINE" rev-list --count '@{upstream}..HEAD' 2>/dev/null || true)
+  case "$avance" in
+    ''|0) ;;
+    *) ajouter "${JAUNE}⇡$avance${FIN}" ;;
   esac
 fi
 

@@ -94,7 +94,7 @@ existent.
 ### 5. Annoncer l'état, une fois la voie retenue
 
 Le développeur tranche, jamais l'agent. Après sa réponse seulement, annoncer
-l'état que la voie ouvre — `Blueprint`, `Courte`, ou `Repos` si c'est hors
+l'état que la voie ouvre — `Blueprint`, `Tâche`, ou `Repos` si c'est hors
 chantier — et ce qui vient ensuite.
 
 **L'étape `Cadrage` est déjà posée** — le bloc en tête l'a écrite avant le tour,
