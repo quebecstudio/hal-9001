@@ -105,6 +105,19 @@ un commit et des tests verts.>
 | 2 | … | feature | backend | 1 |
 | 3 | … | chore | test | 1, 2 |
 
+<Puis les mêmes issues en **vagues**, ce que le tableau ne montre pas : chaque
+vague est ce qui peut se prendre une fois la précédente posée, et dit ce qu'elle
+établit. Les numéros réels s'y reportent à l'ouverture du chantier.>
+
+| Vague | Issues | Ce qu'elle établit |
+|-------|--------|--------------------|
+| 1 | … | … |
+| 2 | … | … |
+
+<Et l'**ordre recommandé**, en une ligne, avec son motif — tiré du risque, non
+du confort. Plusieurs ordres sont presque toujours valides ; celui qu'on
+recommande traite en premier ce qui peut faire tomber le chantier.>
+
 ## Tests
 
 <Les **comportements à prouver**, un par ligne — pas des noms de fichiers de

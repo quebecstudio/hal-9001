@@ -6,7 +6,34 @@ Le chantier ouvert, on travaille sur une branche `dev/<slug>`, créée depuis un
 tronc **tiré à l'instant** : c'est ce qui garantit que le cahier lu par l'agent
 est le dernier fusionné.
 
-L'agent attaque les issues dans l'ordre des dépendances, une à la fois.
+L'agent attaque les issues dans l'ordre des dépendances, au régime convenu à
+l'entrée.
+
+## Par où, et jusqu'où
+
+Avant la première issue, l'agent pose deux questions ensemble, et une seule
+fois.
+
+**Par où** — la première issue de *chaque* chemin ouvert, pas seulement celle du
+chemin qu'il recommande. Un chantier dont les fondations sont indépendantes en
+offre plusieurs ; ne montrer que le préféré, c'est fermer les autres sans le
+dire.
+
+**Jusqu'où** — une issue, une vague entière, ou une portion nommée. Les deux
+derniers sont des **mandats** : ils disent ce qu'ils couvrent et ce qui les
+interrompt, l'agent le rappelle quand il s'en sert, et ils meurent avec la
+tâche. Aucun ne couvre ce qui ne se défait pas.
+
+La recommandation porte sur les deux et se règle sur ce qui coûte cher à
+défaire, non sur ce qui va vite. Une vague homogène — trois actions voisines qui
+se relisent ensemble — se prend d'un bloc. Une vague qui touche une migration,
+une garde ou un système externe se prend une issue à la fois : la relecture y
+vaut plus que la vitesse.
+
+Un mandat ne dispense de rien d'autre. Les tests ciblés tournent à chaque issue,
+le commit reste par issue, et le commentaire de livraison aussi : ce qu'un
+mandat supprime, ce sont les demandes d'autorisation entre deux issues, pas les
+gestes du cycle.
 
 ## Une issue, un cycle
 

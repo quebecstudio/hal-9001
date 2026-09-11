@@ -38,6 +38,13 @@ chantier, **avec les numéros réels** des issues créées.
 | 4 — les gestes | #294 à #299 | Six issues parallèles une fois la vague 3 posée. |
 | 5 — les gardes | #302, #303, #304 | Les tests qui vérifient ce que les gestes ont laissé. |
 
+Une vague dit ce qui **peut** se prendre, pas ce qu'on prend. À l'intérieur
+d'une vague et souvent d'une vague à l'autre, plusieurs ordres restent valides :
+l'agent en recommande un et dit son motif, tiré du risque. Ce qui peut faire
+tomber le chantier se traite en premier — une extension de base de données dont
+on ignore si l'hébergement la porte, une API dont le contrat n'est pas confirmé.
+Sans ce motif, l'ordre recommandé est l'ordre numérique, qui n'apprend rien.
+
 ## Une issue : une tâche, ou un lot de petites tâches
 
 Une issue décrit soit une tâche qui se suffit, soit un lot de petites tâches qui

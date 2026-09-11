@@ -25,7 +25,7 @@ des trois voies, décrites juste après.
 | **Blueprint** | Rédigé depuis `core/templates/tpl-blueprint.md`, statut `Proposé`. Discuté, corrigé. | « Le plan est-il accepté ? » | Chantier si `Accepté` ; reste tant qu'il est discuté ; Repos s'il est abandonné |
 | **Chantier** | Le script de milestone est écrit depuis son gabarit, et donné à relire. Procédure : `/chantier`. | « Je l'exécute ? » — le seul geste qui crée dans un système externe. | Branche une fois exécuté |
 | **Branche** | Rien encore. | « Je crée `dev/<slug>` depuis `main` tiré à l'instant ? » | Issues |
-| **Issues** | Prises dans l'ordre des dépendances, une à la fois. Tests ciblés, un commit par issue, fermeture avec commentaire de livraison. Pas de push automatique. | Rien entre deux issues. À la dernière : « toutes fermées, je relève les dettes ? » | Dettes |
+| **Issues** | Prises dans l'ordre des dépendances, au régime convenu à l'entrée — une issue, une vague, une portion. Tests ciblés, un commit par issue, fermeture avec commentaire de livraison. Pas de push automatique. | À l'entrée : « par où, et jusqu'où ? ». Puis rien, tant que le mandat court. À la dernière : « toutes fermées, je relève les dettes ? » | Dettes |
 | **Courte** | La voie sans blueprint ni milestone. Issues écrites à la main, branche `dev/<slug>`, un commit par issue, tests ciblés, fermeture avec commentaire de livraison. | « Toutes fermées, j'ouvre la PR ? » | Révision |
 | **Dettes** | Une dette par fichier dans `debts/`, préfixée du numéro du blueprint. | « Est-ce complet ? J'ouvre la PR ? » | Révision |
 | **Révision** | Une PR par chantier. Diff lu, code comparé au blueprint, suite complète verte — dans la CI quand le projet lui donne autorité, et son absence se dit plutôt qu'elle ne se remplace par un « c'est vert chez moi » —, tests corrigés revus un à un, audit de sécurité. | « Je fusionne ? » | Fusion ; retour aux Issues si la révision demande des corrections |
@@ -109,6 +109,44 @@ avoir à le demander.
 **Une voie se change en cours de route.** Un travail parti en voie courte qui
 révèle une dépendance revient au cadrage : c'est la dérive, qui existe pour ça.
 Ce qui a été commité reste, et la branche est déjà là.
+
+## Les dépendances se lisent comme un chemin
+
+Une liste de paires « bloquée par » ne se lit pas. Elle dit ce qui est interdit,
+jamais par où commencer — et c'est pourtant la seule question qu'on se pose
+devant un chantier qui s'ouvre.
+
+**Partout où des dépendances sont énoncées, elles se rendent aussi comme un
+ordre de travail** : les vagues, de la plus fondamentale à la plus dérivée,
+chacune nommant ce qu'elle établit. Le tableau du blueprint, la sortie du script
+de jalon, le passage de relais, la reprise à froid — tous en parlent, tous
+doivent le montrer.
+
+Quand plusieurs ordres sont valides — et il y en a presque toujours —, l'agent
+en **recommande un, avec son motif**. Le motif se tire du risque, jamais du
+confort : ce qui peut faire tomber le chantier se traite en premier, et ce qui
+se prouve sans le reste vient avant ce qui en dépend. Un ordre recommandé sans
+motif est un ordre numérique déguisé, et il n'apprend rien.
+
+**Au moment d'attaquer**, deux choses se demandent ensemble, et une seule fois :
+
+- **Par où** — la première issue de **chaque** chemin ouvert, pas seulement
+  celle du chemin recommandé. Un chemin qu'on ne montre pas est un chemin qu'on
+  ferme sans le dire.
+- **Jusqu'où** — une issue, une vague entière, ou une portion nommée. Le second
+  et le troisième sont des **mandats** : ils disent ce qu'ils couvrent et ce qui
+  les interrompt, l'agent le rappelle quand il s'en sert, et ils meurent avec la
+  tâche. Ce qu'aucun mandat ne couvre reste ce qu'il était — ce qui ne se défait
+  pas.
+
+La recommandation porte sur les deux, et se marque comme telle. Elle se règle
+sur ce qui coûte cher à défaire, non sur ce qui va vite : une vague homogène
+dont les issues se relisent ensemble se prend d'un bloc ; une vague qui touche
+une migration, une garde ou un système externe se prend une issue à la fois. La
+question se pose avec l'outil de choix quand il y en a un.
+
+Cela vaut à l'entrée de l'état `Issues` comme en voie `Courte` : ce qui change
+d'une voie à l'autre est d'où viennent les tâches, pas la façon de les attaquer.
 
 ## Statuts d'un blueprint
 

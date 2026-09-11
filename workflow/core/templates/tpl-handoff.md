@@ -33,6 +33,10 @@ dans l'ancre.>
 - En cours : #N — <ce qui reste à faire>
 - Suivantes : #N, #N
 
+<Puis ce qui reste, comme un chemin et non comme une liste : les vagues encore
+ouvertes, et l'ordre recommandé pour la suite avec son motif. Celui qui reprend
+doit savoir par où attaquer sans relire le blueprint ni interroger la forge.>
+
 ## Appris cette session
 
 - <un piège, une convention découverte, une commande utile>

@@ -19,12 +19,12 @@ langue suit celle du projet.
 
 | Gabarit | Ce qu'il produit | Ce qu'il contient |
 |---------|------------------|-------------------|
-| `tpl-blueprint.md` | Un blueprint | Contexte, ce qu'on sait avant de planifier, décision, alternatives, conséquences, découpage, tests, références. |
+| `tpl-blueprint.md` | Un blueprint | Contexte, ce qu'on sait avant de planifier, décision, alternatives, conséquences, découpage — tableau, vagues, ordre recommandé —, tests, références. |
 | `tpl-backlog.md` | Une entrée de backlog | Le problème ou l'envie, l'idée, pourquoi elle vaudrait la peine, ce qu'elle toucherait, les questions ouvertes, le sort. |
 | `tpl-debt.md` | Une dette | Le blueprint d'origine, ce qui a été fait à la place de quoi, ce que ça coûte, ce qui déclencherait le remboursement. |
 | `tpl-issue.md` | Le corps d'une issue | Objectifs, critères d'acceptation, fichiers, tests, référence au plan. C'est ce que le script de jalon remplit pour chaque ligne du découpage. |
 | `tpl-milestone-script.sh` | Un script de jalon | La garde d'idempotence, le jalon, les issues, les dépendances, les deux boucles. Il ne reste qu'à remplir les constantes. |
-| `tpl-handoff.md` | Le passage de relais | L'ancre, les fichiers à lire, les issues, ce qu'on a appris, ce qu'il ne faut pas refaire. Se jette une fois repris. |
+| `tpl-handoff.md` | Le passage de relais | L'ancre, les fichiers à lire, les issues et les vagues qui restent, ce qu'on a appris, ce qu'il ne faut pas refaire. Se jette une fois repris. |
 | `tpl-report.md` | Le rapport d'un agent | Ce qui a été examiné, ce qui a été trouvé, ce qui est proposé avec son coût, ce qui reste incertain. |
 | `tpl-commit.md` | Un message de commit | Les deux formes, de chantier et hors chantier, et ce que le corps doit porter. |
 

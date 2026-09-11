@@ -149,7 +149,13 @@ après lequel se tromper coûte cher, et un jugement s'éprouve avant, pas aprè
 
 Puis : écrire le script depuis son gabarit, **le montrer et s'arrêter** — c'est
 la seule relecture avant que les issues existent pour de bon —, l'exécuter une
-fois, reporter les numéros réels dans le blueprint, créer la branche.
+fois, reporter les numéros réels dans le blueprint, **montrer le chemin**, créer
+la branche.
+
+Montrer le chemin est ce qui rend les tâches utilisables : le graphe en vagues
+tel que la **forge** le porte — pas tel que le blueprint le prévoyait —, les
+ordres valides, celui qu'on recommande et son motif, puis la première issue de
+chaque chemin ouvert et le régime de travail proposé.
 
 Une issue qui manque au tableau du blueprint manque au plan : elle le dit
 plutôt que de la fabriquer. Et elle n'écrit pas de code — ouvrir le chantier et

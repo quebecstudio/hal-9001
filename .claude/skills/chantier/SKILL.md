@@ -67,11 +67,28 @@ passage, mais elle ne protège pas d'un script faux exécuté une fois.
 
 Reporter dans le blueprint les numéros réels rendus par la sortie.
 
-### 5. La branche
+### 5. Montrer le chemin
+
+Les tâches existent, et leur liste ne dit pas par où commencer. Rendre le graphe
+tel qu'il a été câblé — les vagues, chacune nommant ce qu'elle établit —, puis
+les ordres de travail valides, puis **celui qu'on recommande et pourquoi**. Le
+motif se tire du risque : ce qui peut faire tomber le chantier se traite en
+premier, ce qui se prouve sans le reste vient avant ce qui en dépend.
+
+Vérifier le câblage sur la forge avant de le rendre — `listBlockedBy` sur une
+tâche au moins. Un graphe dessiné depuis le blueprint plutôt que depuis ce que
+la forge porte vraiment donnerait un chemin juste sur un câblage faux.
+
+Puis proposer l'attaque : la première issue de **chaque** chemin ouvert, et le
+régime — une issue, une vague, ou une portion nommée. Marquer la recommandation
+et son motif. Les deux derniers régimes sont des mandats : dire ce qu'ils
+couvrent et ce qui les interrompt. `cycle.md` porte la règle.
+
+### 6. La branche
 
 `dev/kebab-title`, créée depuis `main` tiré à l'instant. L'annoncer avant.
 
-### 6. L'état courant
+### 7. L'état courant
 
 Si `workflow/etat.local.md` existe, l'écrire : `Issues M0017 #<première issue>`.
 

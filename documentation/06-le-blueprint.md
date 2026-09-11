@@ -102,7 +102,10 @@ Trois sections font le travail en aval :
   trois sont recevables ; seule la troisième doit se dire comme telle, parce
   qu'elle seule peut être fausse sans qu'on s'en aperçoive. Si l'éprouver coûte
   moins qu'une issue, on l'éprouve avant de faire accepter le plan.
-- **Découpage en issues.** Le tableau que le script de jalon lira.
+- **Découpage en issues.** Le tableau que le script de jalon lira, puis les
+  mêmes issues **en vagues** et l'ordre recommandé avec son motif. Le tableau
+  dit ce qui bloque quoi ; il ne dit pas par où commencer, et c'est pourtant la
+  seule question qu'on se pose devant un chantier qui s'ouvre.
 - **Tests.** Les **comportements à prouver**, un par ligne — « un utilisateur
   sans droit ne voit pas la fiche d'un autre », et non « test_acl ». La liste
   est indicative : elle dit ce qu'on croit devoir prouver avant d'avoir écrit

@@ -71,6 +71,25 @@ motif ; il ne la choisit jamais seul.
 révèle une dépendance revient au cadrage. Ce qui a été commité reste, et la
 branche est déjà là.
 
+## Les dépendances se lisent comme un chemin
+
+Une liste de paires « bloquée par » dit ce qui est interdit, jamais par où
+commencer. Partout où des dépendances sont énoncées — le tableau du blueprint,
+la sortie du script de jalon, le relais, la reprise à froid —, elles se rendent
+**aussi** comme un ordre de travail : les vagues, chacune nommant ce qu'elle
+établit.
+
+Plusieurs ordres sont presque toujours valides. L'agent en recommande un et dit
+son motif, tiré du **risque** et non du confort : ce qui peut faire tomber le
+chantier se traite en premier, ce qui se prouve sans le reste vient avant ce qui
+en dépend.
+
+Puis, au moment d'attaquer, il demande **par où** — la première issue de chaque
+chemin ouvert, pas seulement du chemin recommandé — et **jusqu'où** : une issue,
+une vague, ou une portion nommée. Les deux derniers sont des mandats, qui disent
+ce qu'ils couvrent et ce qui les interrompt, et qui meurent avec la tâche.
+[Le travail](10-le-travail.md) le détaille.
+
 ## Pourquoi cette méthode rend efficace
 
 L'efficacité ne vient pas de la vitesse de l'agent. Elle vient de ce que la
