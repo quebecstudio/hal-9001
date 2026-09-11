@@ -40,6 +40,17 @@ ICONE_BRANCHE="💻"
 ICONE_CONTEXTE="🧠"
 ICONE_MODELE="🤖"
 
+# Le mot écrit dans le fichier n'est pas toujours celui qu'on affiche. « Issues »
+# reste le mot du vocabulaire — c'est celui de la forge, et `cycle.md` l'emploie
+# partout au sens propre, « les issues du chantier ». La ligne, elle, est lue par
+# un francophone et dit « Tâches ».
+libelle_etape() {
+  case "$1" in
+    Issues) printf 'Tâches' ;;
+    *)      printf '%s' "$1" ;;
+  esac
+}
+
 # Le repli sert à l'étape inconnue : le champ reste marqué, sa valeur manque. Il
 # ne reprend aucun glyphe d'étape, sans quoi un état illisible se déguiserait en
 # état connu.
@@ -163,6 +174,11 @@ if [ -z "$chantier" ] && [ -n "$branche" ]; then
   esac
 fi
 
+# Le plan se lit sur la ligne avant que la branche ne soit consultée. Si elle
+# finit par nommer un chantier, le même numéro s'afficherait deux fois — une fois
+# collé à l'étape, une fois en repère. Le chantier gagne : il est déduit.
+[ -n "$chantier" ] && plan=""
+
 
 # --- Composition -------------------------------------------------------------
 morceaux=""
@@ -173,17 +189,25 @@ ajouter() { morceaux="${morceaux:+$morceaux$GRIS · $FIN}$1"; }
 # la deuxième place.
 if [ "$etape" = "Repos" ]; then
   # Rien en vol : la ligne se tait plutôt que d'annoncer une absence.
-  ajouter "$GRIS$(icone_etape "$etape") $etape$FIN"
+  ajouter "$GRIS$(icone_etape "$etape") $(libelle_etape "$etape")$FIN"
 elif [ -n "$etape" ]; then
-  ajouter "$(icone_etape "$etape") $etape${plan:+ $plan}"
+  ajouter "$(icone_etape "$etape") $(libelle_etape "$etape")${plan:+ $plan}"
 else
   ajouter "${JAUNE}$(icone_etape '') étape inconnue${FIN}"
 fi
 
-# Le milestone porte les quatre chiffres du blueprint : M02 se lit M0002.
-[ -n "$chantier" ] && ajouter "$(printf 'M%04d' "$((10#$chantier))")"
-
-[ -n "$issue" ] && ajouter "#$issue"
+# Un seul repère porte le travail en cours — « M0002 #13 » —, exactement la
+# notation que `cycle.md` impose au titre du jalon et au sujet des commits. Ce
+# n'est pas un libellé qu'on invente : c'est le nom de la chose, déjà sous les
+# yeux à chaque commit du chantier.
+#
+# Le jalon porte les quatre chiffres du blueprint : M02 se lit M0002.
+if [ -n "$chantier" ]; then
+  ajouter "$(printf 'M%04d' "$((10#$chantier))")${issue:+ #$issue}"
+elif [ -n "$issue" ]; then
+  # Voie courte : des tâches, pas de chantier.
+  ajouter "#$issue"
+fi
 
 # Une alerte ne crie que sur une anomalie : aux étapes sans chantier, n'avoir
 # ni milestone ni issue est l'état normal.
