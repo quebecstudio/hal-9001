@@ -130,6 +130,15 @@ ETAPES="Repos Cadrage Blueprint Chantier Branche Issues Tâche Dettes Révision 
 # sur la voie longue aussi, où l'absence de chantier est bien une anomalie.
 SANS_CHANTIER="Repos Cadrage Blueprint Tâche"
 
+# Celles où être sur le tronc est l'état normal : la branche de chantier n'existe
+# pas encore, ou n'existe plus. Ailleurs, le travail est sur `dev/<slug>` et
+# rester sur le tronc est la dérive que cette ligne sert à voir.
+#
+# Le jaune sur `main` a longtemps été inconditionnel. Il criait donc au Repos,
+# c'est-à-dire sur l'endroit où l'on doit précisément se trouver quand rien n'est
+# en cours.
+SUR_TRONC="Repos Cadrage Blueprint Chantier Fusion Abandon"
+
 # --- L'état déclaré ----------------------------------------------------------
 # Première ligne utile de workflow/etat.local.md. Le script y cherche trois
 # choses dans n'importe quel ordre ; le reste de la ligne est ignoré.
@@ -241,7 +250,11 @@ for e in $SANS_CHANTIER; do
   [ "$etape" = "$e" ] && normal=1 && break
 done
 if [ -z "$chantier" ] && [ -z "$issue" ] && [ -z "$plan" ] && [ -z "$normal" ]; then
-  ajouter "${JAUNE}hors chantier${FIN}"
+  # « Sans repère » et non « hors chantier » : l'alerte porte sur ce que le
+  # fichier d'état **déclare**, pas sur la branche où l'on se trouve. Les deux se
+  # corrigent autrement — celle-ci en écrivant « #13 », l'autre par un
+  # `git switch` —, et les confondre ferait chercher au mauvais endroit.
+  ajouter "${JAUNE}sans repère${FIN}"
 fi
 
 # Les commits qui n'ont pas quitté le poste, collés à la branche : c'est d'elle
@@ -263,13 +276,28 @@ if [ -n "$branche" ] && command -v git >/dev/null 2>&1; then
   esac
 fi
 
+# Le tronc n'est une dérive qu'aux étapes où le travail devrait être sur une
+# branche de chantier. Faute d'étape lisible, on ne juge pas : « étape inconnue »
+# crie déjà, et deux alertes pour une seule ignorance n'apprennent rien.
+tronc_normal=1
+if [ -n "$etape" ]; then
+  tronc_normal=""
+  for e in $SUR_TRONC; do
+    [ "$etape" = "$e" ] && tronc_normal=1 && break
+  done
+fi
+
 # Le cycle ne connaît que deux formes de branche. Une troisième n'est pas un cas
 # tranquille qu'on mettrait en gris : c'est qu'on travaille hors de la
 # nomenclature, et ça se signale comme le reste des anomalies.
 if [ -z "$branche" ]; then
   ajouter "${JAUNE}$ICONE_BRANCHE hors dépôt${FIN}"
 elif [ "$branche" = "main" ] || [ "$branche" = "master" ]; then
-  ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${avance}${FIN}"
+  if [ -n "$tronc_normal" ]; then
+    ajouter "$ICONE_BRANCHE ${branche}${avance}"
+  else
+    ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${avance}${FIN}"
+  fi
 else
   case "$branche" in
     dev/*) ajouter "${VERT}$ICONE_BRANCHE ${branche}${avance}${FIN}" ;;

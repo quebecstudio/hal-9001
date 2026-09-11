@@ -236,9 +236,10 @@ qu'il recevrait. Les cas limites :
 | `Cadrage` | `🧭 Cadrage · 💻 main · 🧠 62%` — ni chantier ni issue, et c'est normal à cette étape |
 | `Blueprint 0003` | `📐 Blueprint 0003 · 💻 main · 🧠 62%` — le numéro se colle à l'étape, il n'y a pas encore de jalon |
 | `Tâche #9`, sur une branche sans blueprint | `⚡ Tâche simple · #9 · 💻 dev/… ` — voie courte, pas de jalon, **et pas d'alerte** |
-| `Révision`, sur `main` | `🔍 Révision · hors chantier · 💻 main · ⇡2` — là, l'alerte a raison |
+| `Repos`, sur `main` | `💤 Repos · 💻 main` — le tronc **sans jaune** : c'est là qu'on doit être quand rien n'est en cours |
+| `Révision`, sur `main` | `🔍 Révision · sans repère · 💻 main ⇡2` — deux alertes, deux problèmes : rien n'est déclaré, et le travail n'est pas là |
 | `M02 #19` | `❔ étape inconnue · M0002 #19 · …` |
-| ligne inintelligible, ou fichier absent | `❔ étape inconnue · hors chantier · …` |
+| ligne inintelligible, ou fichier absent | `❔ étape inconnue · sans repère · …` |
 | hors dépôt Git | `… · 💻 hors dépôt · 🤖 Opus 5` |
 
 ## Avant de la reprendre ailleurs
@@ -252,18 +253,30 @@ qu'il recevrait. Les cas limites :
 - **bash est nécessaire.** Sur Windows, celui de Git Bash. Le dépôt force la fin
   de ligne LF sur les `.sh` : en CRLF, Git Bash refuse le fichier avec une
   erreur sur le retour chariot.
-- **Une alerte ne doit crier que sur une anomalie.** « Hors chantier » ne
-  s'affiche pas au Cadrage ni au Blueprint : à ces étapes, n'avoir ni jalon ni
-  issue est l'état normal. Une alerte qui se déclenche sur un état normal cesse
-  d'être lue, et emporte les autres avec elle.
+- **Une alerte ne doit crier que sur une anomalie**, et **presque rien n'est une
+  anomalie indépendamment de l'étape**. C'est la leçon que cette ligne a mis le
+  plus de temps à apprendre : trois alertes qu'on croyait constantes se sont
+  révélées dépendre de l'endroit du cycle où l'on se trouve.
 
-  **Elle se tait aussi en voie courte, à toutes les étapes**, et cette condition
-  se déduit de la branche : un `dev/<slug>` sans blueprint à son nom est une voie
-  courte, où n'avoir pas de chantier est la définition même. Lister `Révision` et
-  `Fusion` parmi les étapes tolérantes les aurait rendues muettes sur la voie
-  longue aussi, où l'absence de chantier est bien une anomalie. Le défaut s'est
-  vu à l'usage, pas à la lecture : une voie courte arrivée à la révision criait
-  « hors chantier » sur un état parfaitement normal.
+  **`sans repère`** ne s'affiche pas au Cadrage ni au Blueprint — à ces étapes,
+  n'avoir ni jalon ni issue est normal. Ni en voie courte, à aucune étape, et
+  cette condition **se déduit de la branche** : un `dev/<slug>` sans blueprint à
+  son nom est une voie courte, où n'avoir pas de chantier est la définition même.
+  Lister `Révision` et `Fusion` parmi les étapes tolérantes les aurait rendues
+  muettes sur la voie longue aussi, où c'est bien une anomalie.
+
+  **Le jaune sur le tronc** ne s'affiche qu'aux étapes où le travail devrait être
+  sur une branche de chantier. Il a longtemps été inconditionnel : il criait donc
+  au Repos, c'est-à-dire sur l'endroit exact où l'on doit se trouver quand rien
+  n'est en cours.
+
+- **Deux alertes proches ne se fondent pas pour autant.** `sans repère` porte sur
+  ce que le fichier d'état **déclare** ; le jaune sur le tronc, sur **où l'on
+  est**. Elles se déclenchent souvent ensemble, mais se corrigent autrement —
+  l'une en écrivant `#13`, l'autre par un `git switch`. Les confondre ferait
+  chercher au mauvais endroit. C'est aussi pourquoi l'alerte ne s'appelle plus
+  « hors chantier » : le nom se lisait comme « tu n'es pas sur une branche de
+  chantier », qui est l'autre alerte.
 - **Un seul emplacement**, et **aucun secret** : ce qu'elle affiche est visible
   de quiconque regarde l'écran ou une capture.
 
