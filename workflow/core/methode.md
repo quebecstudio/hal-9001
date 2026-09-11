@@ -93,12 +93,21 @@ de référence et dans les messages de commit.
   produit, **nommer la décision attendue** et l'état qu'elle ouvrirait, puis
   s'arrêter. « C'est fait » n'est pas une fin d'étape. La table du cycle, dans
   `cycle.md`, donne pour chaque état la question et les réponses possibles.
-- **Tenir l'état courant.** Si `workflow/etat.local.md` existe, y écrire
-  **l'étape**, et elle seule : le chantier et l'issue se déduisent de la branche
-  et du dernier commit. Un mot par ligne — `Issues`. **Les mots reconnus sont en
-  tête du fichier ; n'en pas inventer.** Hors chantier, `Repos`. S'il n'existe
-  pas, ne pas le créer. Ce qu'on y écrit en plus reste prioritaire sur ce que
-  Git dit, pour les cas où Git se tait.
+- **Tenir l'état courant.** Si `workflow/etat.local.md` existe, y écrire **ce que
+  Git ne peut pas dire**, sur une seule ligne : l'**étape**, le numéro du
+  **blueprint** quand on y travaille, et l'**issue en cours**. `Blueprint 0002`,
+  `Issues #13`. Hors chantier, `Repos`. **Les mots d'étape reconnus sont en tête
+  du fichier ; n'en pas inventer.** S'il n'existe pas, ne pas le créer.
+
+  Le reste se déduit et ne s'écrit pas : la branche `dev/<slug>` nomme le
+  chantier. Et ces trois-là ne se déduisent **pas** — plusieurs blueprints
+  peuvent attendre d'avance, et le dernier commit nomme la dernière issue
+  **livrée**, pas celle qu'on a ouverte. Une valeur devinée mentirait au premier
+  cas de figure ordinaire.
+
+  **L'issue s'écrit quand on l'ouvre, pas quand on la ferme.** Une ligne qu'on ne
+  tient qu'à la fin n'affiche jamais le travail en cours, ce qui est la seule
+  chose qu'on lui demande.
 - **Suivre l'existant.** Regarder les fichiers voisins avant de créer. Réutiliser
   avant d'écrire.
 - **Demander avant de changer le cadre.** Dépendance, dossier racine, suppression

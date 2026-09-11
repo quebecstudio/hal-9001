@@ -137,9 +137,14 @@ fi
 
 # --- Ce que Git sait déjà -----------------------------------------------------
 # Le fichier d'état a menti une session entière, parce qu'il est tenu à la main.
-# Deux des trois choses qu'il porte se déduisent, et ce qui se déduit ne ment
-# pas : la branche `dev/<slug>` nomme le blueprint, dont le numéro est celui du
-# jalon ; le sujet du dernier commit porte le numéro d'issue.
+# Une seule des trois choses qu'il porte se déduit sans risque, et ce qui se
+# déduit ne ment pas : la branche `dev/<slug>` nomme le blueprint, dont le numéro
+# est celui du jalon.
+#
+# Le numéro d'issue ne se déduit **pas** du dernier commit, et c'est délibéré :
+# ce commit nomme la dernière issue **livrée**, pas celle qu'on vient d'ouvrir.
+# Une fois #11 commitée, la ligne afficherait #11 toute la soirée. Un fait passé
+# présenté comme un fait présent est pire qu'un champ vide.
 #
 # Ce qui est écrit dans le fichier reste prioritaire — Git ne sait pas tout, et
 # une correction à la main doit pouvoir gagner.
@@ -158,32 +163,25 @@ if [ -z "$chantier" ] && [ -n "$branche" ]; then
   esac
 fi
 
-if [ -z "$issue" ] && command -v git >/dev/null 2>&1; then
-  # « MNNNN #13: … » ou « #13: … ». Le sujet seul : un corps de message peut
-  # citer d'autres numéros, et ce serait alors le mauvais qui s'afficherait.
-  sujet=$(git -C "$RACINE" log -1 --format=%s 2>/dev/null || true)
-  issue=$(printf '%s' "$sujet" | sed -n 's/^\([Mm][0-9]\{1,4\}[[:space:]]\+\)\?#\([0-9]\{1,6\}\).*/\2/p')
-fi
 
 # --- Composition -------------------------------------------------------------
 morceaux=""
 ajouter() { morceaux="${morceaux:+$morceaux$GRIS · $FIN}$1"; }
 
+# Le numéro du plan se colle à l'étape — « Blueprint 0002 » — plutôt que de tenir
+# un segment : il qualifie le mot, et il n'y a pas encore de jalon pour occuper
+# la deuxième place.
 if [ "$etape" = "Repos" ]; then
   # Rien en vol : la ligne se tait plutôt que d'annoncer une absence.
   ajouter "$GRIS$(icone_etape "$etape") $etape$FIN"
 elif [ -n "$etape" ]; then
-  ajouter "$(icone_etape "$etape") $etape"
+  ajouter "$(icone_etape "$etape") $etape${plan:+ $plan}"
 else
   ajouter "${JAUNE}$(icone_etape '') étape inconnue${FIN}"
 fi
 
-if [ -n "$chantier" ]; then
-  # Le milestone porte les quatre chiffres du blueprint : M02 se lit M0002.
-  ajouter "$(printf 'M%04d' "$((10#$chantier))")"
-elif [ -n "$plan" ]; then
-  ajouter "$plan"
-fi
+# Le milestone porte les quatre chiffres du blueprint : M02 se lit M0002.
+[ -n "$chantier" ] && ajouter "$(printf 'M%04d' "$((10#$chantier))")"
 
 [ -n "$issue" ] && ajouter "#$issue"
 
