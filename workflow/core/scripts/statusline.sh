@@ -38,6 +38,7 @@ FIN=$'\033[0m'
 # celui qui atteint cette étape-là.
 ICONE_BRANCHE="💻"
 ICONE_CONTEXTE="🧠"
+ICONE_EFFORT="💪"
 ICONE_MODELE="🤖"
 
 # Le mot écrit dans le fichier n'est pas toujours celui qu'on affiche. « Issues »
@@ -243,34 +244,39 @@ if [ -z "$chantier" ] && [ -z "$issue" ] && [ -z "$plan" ] && [ -z "$normal" ]; 
   ajouter "${JAUNE}hors chantier${FIN}"
 fi
 
+# Les commits qui n'ont pas quitté le poste, collés à la branche : c'est d'elle
+# qu'ils parlent, pas d'autre chose. Rien quand il n'y en a pas.
+#
+# L'avance se compte sans réseau, le retard non — il faudrait un `fetch` à chaque
+# frappe. Donc une flèche, et une seule. Sans amont — une branche jamais poussée
+# —, `@{upstream}` échoue et le champ reste vide, ce qui est honnête : on ne sait
+# pas ce qui manque au distant tant qu'on ne lui a rien dit.
+avance=""
+if [ -n "$branche" ] && command -v git >/dev/null 2>&1; then
+  n=$(git -C "$RACINE" rev-list --count '@{upstream}..HEAD' 2>/dev/null || true)
+  case "$n" in
+    ''|0) ;;
+    # Elle garde son jaune à l'intérieur du segment : collée à une branche de
+    # chantier, qui est verte, elle dirait « tout va bien » alors qu'elle rappelle
+    # qu'il reste quelque chose à faire.
+    *) avance="$FIN$JAUNE ⇡$n" ;;
+  esac
+fi
+
 # Le cycle ne connaît que deux formes de branche. Une troisième n'est pas un cas
 # tranquille qu'on mettrait en gris : c'est qu'on travaille hors de la
 # nomenclature, et ça se signale comme le reste des anomalies.
 if [ -z "$branche" ]; then
   ajouter "${JAUNE}$ICONE_BRANCHE hors dépôt${FIN}"
 elif [ "$branche" = "main" ] || [ "$branche" = "master" ]; then
-  ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${FIN}"
+  ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${avance}${FIN}"
 else
   case "$branche" in
-    dev/*) ajouter "${VERT}$ICONE_BRANCHE ${branche}${FIN}" ;;
-    *)     ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${FIN}" ;;
+    dev/*) ajouter "${VERT}$ICONE_BRANCHE ${branche}${avance}${FIN}" ;;
+    *)     ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${avance}${FIN}" ;;
   esac
 fi
 
-# Les commits qui n'ont pas quitté le poste. Rien à afficher quand il n'y en a
-# pas : une alerte ne crie que sur une anomalie.
-#
-# L'avance se compte sans réseau, le retard non — il faudrait un `fetch` à chaque
-# frappe. Donc une flèche, et une seule. Sans amont — une branche jamais poussée
-# —, `@{upstream}` échoue et le champ reste vide, ce qui est honnête : on ne sait
-# pas ce qui manque au distant tant qu'on ne lui a rien dit.
-if [ -n "$branche" ] && command -v git >/dev/null 2>&1; then
-  avance=$(git -C "$RACINE" rev-list --count '@{upstream}..HEAD' 2>/dev/null || true)
-  case "$avance" in
-    ''|0) ;;
-    *) ajouter "${JAUNE}⇡$avance${FIN}" ;;
-  esac
-fi
 
 # Les paliers suivent la règle du relais : l'alerte doit arriver assez tôt pour
 # qu'une tâche en cours puisse encore se terminer, puisque c'est là qu'un relais
@@ -287,9 +293,12 @@ if [ -n "$CONTEXTE" ]; then
   fi
 fi
 
-# L'effort suit le modèle dans le même segment : c'est une propriété de lui, pas
-# un champ à part, et la ligne n'a pas de place à donner à un séparateur de plus.
-[ -n "$MODELE" ] && ajouter "$GRIS$ICONE_MODELE $MODELE${EFFORT:+ · $EFFORT}$FIN"
+# L'effort a son propre marqueur plutôt que de suivre le modèle : il se règle
+# séparément, et un « · » à l'intérieur d'un segment est le même glyphe que celui
+# qui sépare les segments — l'œil y lisait une frontière qui n'existait pas.
+[ -n "$EFFORT" ] && ajouter "$GRIS$ICONE_EFFORT $EFFORT$FIN"
+
+[ -n "$MODELE" ] && ajouter "$GRIS$ICONE_MODELE $MODELE$FIN"
 
 printf '%s\n' "$morceaux"
 exit 0

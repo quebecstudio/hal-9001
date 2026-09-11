@@ -34,7 +34,7 @@ workflow/
   instructions.md              # règles du projet, architecture, pile, conventions
   instructions.local.md        # préférences d'un développeur, hors Git
   handoff.md                   # le passage de relais en cours, hors Git
-  etat.local.md                # l'étape courante, hors Git
+  etat.local.md                # l'étape, le blueprint, l'issue en cours ; hors Git
   repo.sh                      # le dépôt visé ; hors de core/, une mise à jour ne l'écrase pas
   milestones/
     0001-fondations.sh         # un script par blueprint, même numéro, même slug

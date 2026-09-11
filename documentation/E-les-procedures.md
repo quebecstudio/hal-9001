@@ -22,7 +22,7 @@ pré-approuvant des outils pour la durée du tour.
 | [`/idee`](#idee) | Le backlog entier, l'état courant | Pré-approuve le dépôt et le commit, restreints à `workflow/backlog/`. |
 | [`/bug`](#bug) | L'état du dépôt, l'issue en cours | — |
 | [`/amendement`](#amendement) | Le statut de chaque blueprint, la date du jour | — |
-| [`/cadrage`](#cadrage) | Le backlog, les chantiers passés, l'état du dépôt | Retire les outils d'écriture. |
+| [`/cadrage`](#cadrage) | Le backlog, les chantiers passés, l'état du dépôt | Retire les outils d'édition ; pose l'étape `Cadrage` avant le tour. |
 | [`/chantier`](#chantier) | Les blueprints, les scripts déjà écrits, la branche | — |
 | [`/abandon`](#abandon) | L'état, le statut des blueprints, la date | — |
 | [`/relais`](#relais) | Les commits de la session, les fichiers modifiés, l'heure | — |
@@ -118,9 +118,11 @@ nécessaire.
 
 *Pas de mot-clé. L'entrée du cycle.*
 
-Elle **retire les outils d'écriture** : un cadrage ne produit rien qu'une
-décision. Elle montre le backlog, les chantiers passés et l'état du dépôt, parce
-qu'une idée oubliée qui revient sous un autre nom est le gaspillage le plus
+Elle **retire les outils d'édition** : un cadrage ne produit rien qu'une
+décision. Bash reste, pour lire et interroger — l'historique, la forge, le code,
+les dépendances —, parce que peser le travail demande de regarder ; il ne sert
+pas à écrire. Elle montre le backlog, les chantiers passés et l'état du dépôt,
+parce qu'une idée oubliée qui revient sous un autre nom est le gaspillage le plus
 courant.
 
 Elle enchaîne : dire ce qu'on a compris, **poser le périmètre**, peser le
@@ -133,10 +135,15 @@ puis revient avec ce qu'elle a trouvé. Et elle pose la question **avec l'outil
 de choix** plutôt qu'en prose : ce qu'on lit dans un paragraphe se saute, ce
 qu'on clique se prend.
 
-L'état s'**annonce** à la sortie, une fois la voie retenue, et ne s'écrit qu'au
-tour suivant : les outils d'écriture sont retirés, et c'est précisément ce qui
-garantit qu'un cadrage ne produit aucun fichier. Tenir `etat.local.md` est déjà
-une règle de la méthode ; la procédure n'a pas à la doubler.
+**L'étape `Cadrage` est posée avant le tour**, par un bloc que le harnais exécute
+à l'ouverture — entrer dans un cadrage, c'est être au Cadrage. C'est la seule
+procédure qui écrit son propre état, et elle le fait parce qu'elle est la seule à
+ne pas pouvoir l'écrire pendant : un jour, l'agent a annoncé une étape qu'il
+n'avait pas lue, faute de l'avoir écrite au tour d'avant.
+
+L'étape **suivante**, celle que la voie ouvre, s'annonce à la sortie et s'écrit
+au premier tour outillé. Tenir `etat.local.md` est déjà une règle de la méthode ;
+la procédure n'a pas à la doubler.
 
 ### `/chantier`
 
