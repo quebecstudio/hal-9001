@@ -22,10 +22,16 @@ $ARGUMENTS
 
 !`git status --short --branch`
 
+## L'étape, posée avant le tour
+
+!`f=workflow/etat.local.md; if [ -f "$f" ]; then { grep '^[[:space:]]*#' "$f"; echo Cadrage; } > "$f.tmp" && mv "$f.tmp" "$f" && echo "Cadrage"; else echo "(pas de fichier d'état)"; fi`
+
 ## Ce qu'il faut faire
 
-Le cadrage ne produit aucun fichier — les outils d'écriture sont retirés pour ce
-tour. Il produit deux décisions, et s'arrête sur elles.
+Le cadrage ne produit **aucun fichier du dépôt** : les outils d'édition dédiés
+sont retirés pour ce tour. Bash reste, pour lire et interroger — l'historique, la
+forge, le code, les dépendances — parce que peser le travail demande de regarder.
+Il ne sert pas à écrire. Le cadrage produit deux décisions, et s'arrête sur elles.
 
 ### 1. Dire ce qu'on a compris
 
@@ -91,7 +97,8 @@ Le développeur tranche, jamais l'agent. Après sa réponse seulement, annoncer
 l'état que la voie ouvre — `Blueprint`, `Courte`, ou `Repos` si c'est hors
 chantier — et ce qui vient ensuite.
 
-Il s'**écrit au tour suivant**, pas ici : les outils d'écriture sont retirés
-pour ce tour, et c'est ce qui garantit qu'un cadrage ne produit aucun fichier.
-Tenir `workflow/etat.local.md` à jour est déjà une règle de la méthode ; elle
-n'a pas besoin de cette procédure pour s'appliquer.
+**L'étape `Cadrage` est déjà posée** — le bloc en tête l'a écrite avant le tour,
+sans passer par l'agent. Ce qui reste à écrire est l'étape **suivante**, celle
+que la voie retenue ouvre, et elle s'écrit au premier tour outillé : les outils
+d'édition sont retirés ici. Ne pas l'annoncer comme faite tant qu'elle ne l'est
+pas.

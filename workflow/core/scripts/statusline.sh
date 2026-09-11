@@ -14,8 +14,21 @@ ENTREE=$(cat 2>/dev/null || true)
 
 JAUNE=$'\033[33m'
 ROUGE=$'\033[31m'
+VERT=$'\033[32m'
 GRIS=$'\033[2m'
 FIN=$'\033[0m'
+
+# La couleur dit le niveau d'inquiétude, jamais la nature : jaune « fais
+# attention », rouge « alarme », vert « tu es où tu dois être », gris « rien à
+# voir ». Un jeu de couleurs par étape mentirait — onze états pour six couleurs
+# utilisables —, et le jaune cesserait de vouloir dire quelque chose.
+#
+# Les emojis, eux, marquent le **champ** et pas sa valeur : ils sont fixes, et
+# n'entrent donc pas en collision avec les neuf marqueurs de la méthode.
+ICONE_ETAPE="🧭"
+ICONE_BRANCHE="🌿"
+ICONE_CONTEXTE="🧠"
+ICONE_MODELE="🤖"
 
 # L'entrée est un JSON plat produit par l'agent, jamais une donnée d'origine
 # inconnue : l'extraction au sed est acceptable ici et nulle part ailleurs.
@@ -126,10 +139,13 @@ fi
 morceaux=""
 ajouter() { morceaux="${morceaux:+$morceaux$GRIS · $FIN}$1"; }
 
-if [ -n "$etape" ]; then
-  ajouter "$etape"
+if [ "$etape" = "Repos" ]; then
+  # Rien en vol : la ligne se tait plutôt que d'annoncer une absence.
+  ajouter "$GRIS$ICONE_ETAPE $etape$FIN"
+elif [ -n "$etape" ]; then
+  ajouter "$ICONE_ETAPE $etape"
 else
-  ajouter "${JAUNE}étape inconnue${FIN}"
+  ajouter "${JAUNE}$ICONE_ETAPE étape inconnue${FIN}"
 fi
 
 if [ -n "$chantier" ]; then
@@ -151,12 +167,18 @@ if [ -z "$chantier" ] && [ -z "$issue" ] && [ -z "$plan" ] && [ -z "$normal" ]; 
   ajouter "${JAUNE}hors chantier${FIN}"
 fi
 
+# Le cycle ne connaît que deux formes de branche. Une troisième n'est pas un cas
+# tranquille qu'on mettrait en gris : c'est qu'on travaille hors de la
+# nomenclature, et ça se signale comme le reste des anomalies.
 if [ -z "$branche" ]; then
-  ajouter "${JAUNE}hors dépôt${FIN}"
+  ajouter "${JAUNE}$ICONE_BRANCHE hors dépôt${FIN}"
 elif [ "$branche" = "main" ] || [ "$branche" = "master" ]; then
-  ajouter "${JAUNE}${branche}${FIN}"
+  ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${FIN}"
 else
-  ajouter "$branche"
+  case "$branche" in
+    dev/*) ajouter "${VERT}$ICONE_BRANCHE ${branche}${FIN}" ;;
+    *)     ajouter "${JAUNE}$ICONE_BRANCHE ${branche}${FIN}" ;;
+  esac
 fi
 
 # Les paliers suivent la règle du relais : l'alerte doit arriver assez tôt pour
@@ -164,17 +186,17 @@ fi
 # se pose. En dessous de 75 %, elle crierait sur un état normal.
 if [ -n "$CONTEXTE" ]; then
   if [ "$CONTEXTE" -ge 90 ]; then
-    ajouter "${ROUGE}${CONTEXTE}%${FIN}"
+    ajouter "${ROUGE}$ICONE_CONTEXTE ${CONTEXTE}%${FIN}"
   elif [ "$CONTEXTE" -ge 75 ]; then
-    ajouter "${JAUNE}${CONTEXTE}%${FIN}"
+    ajouter "${JAUNE}$ICONE_CONTEXTE ${CONTEXTE}%${FIN}"
   elif [ "$CONTEXTE" -ge 50 ]; then
-    ajouter "${CONTEXTE}%"
+    ajouter "$ICONE_CONTEXTE ${CONTEXTE}%"
   else
-    ajouter "$GRIS${CONTEXTE}%$FIN"
+    ajouter "$GRIS$ICONE_CONTEXTE ${CONTEXTE}%$FIN"
   fi
 fi
 
-[ -n "$MODELE" ] && ajouter "$GRIS$MODELE$FIN"
+[ -n "$MODELE" ] && ajouter "$GRIS$ICONE_MODELE $MODELE$FIN"
 
 printf '%s\n' "$morceaux"
 exit 0
